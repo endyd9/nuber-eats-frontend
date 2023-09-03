@@ -5,6 +5,9 @@ import { LoginMutation, LoginMutationVariables } from "../gql/graphql";
 import logo from "../images/logo.svg";
 import { Button } from "../components/button";
 import { Link } from "react-router-dom";
+import { Helmet } from "react-helmet-async";
+import { authTokenVar, isLoggedInVar } from "../apollo";
+import { LOCLASROTAGE_TOKEN } from "../constants";
 
 const LOGIN_MUTATION = gql`
   mutation Login($loginInput: LoginInput!) {
@@ -26,14 +29,18 @@ export const Login = () => {
     register,
     handleSubmit,
     formState: { errors, isValid },
-  } = useForm<LoginForm>();
+  } = useForm<LoginForm>({
+    mode: "onChange",
+  });
 
   const onCompleted = (data: LoginMutation) => {
     const {
       login: { ok, token },
     } = data;
-    if (ok) {
-      console.log(token);
+    if (ok && token) {
+      localStorage.setItem(LOCLASROTAGE_TOKEN, token);
+      authTokenVar(token);
+      isLoggedInVar(true);
     }
   };
 
@@ -59,6 +66,9 @@ export const Login = () => {
   };
   return (
     <div className="h-screen flex flex-col items-center xl:mt-32 mt-10 ">
+      <Helmet>
+        <title>Nuber-Eats | Login</title>
+      </Helmet>
       <div className="w-full max-w-screen-sm flex flex-col items-center px-5">
         <img src={logo} alt="logo" className="w-56 mb-5" />
         {loginResult?.login.error ? (
@@ -76,18 +86,23 @@ export const Login = () => {
           className="flex flex-col my-5 w-full"
         >
           <input
-            className="p-3 text-lg mb-5 border border-gray-200"
+            className="input"
             type="email"
             placeholder="Email"
             {...register("email", {
               required: "이메일을 입력해주세요.",
+              pattern:
+                /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
             })}
           />
           {errors.email?.message && (
             <FormError errorMessage={errors.email.message} />
           )}
+          {errors.email?.type === "pattern" && (
+            <FormError errorMessage="유효하지 않은 이메일 형식입니다." />
+          )}
           <input
-            className="input"
+            className="input mt-5"
             type="password"
             placeholder="Password"
             {...register("pass", {
