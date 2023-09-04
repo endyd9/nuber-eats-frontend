@@ -72,7 +72,6 @@ export const Join = () => {
       });
     }
   };
-  console.log(watch());
 
   return (
     <div className="h-screen flex flex-col items-center xl:mt-32 mt-10 ">

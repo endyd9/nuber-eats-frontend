@@ -1,5 +1,5 @@
 import { gql, useQuery } from "@apollo/client";
-import { MeQuery } from "../gql/graphql";
+import { Query } from "../gql/graphql";
 
 const ME_QUERY = gql`
   query me {
@@ -13,5 +13,5 @@ const ME_QUERY = gql`
 `;
 
 export const useMe = () => {
-  return useQuery<MeQuery>(ME_QUERY);
+  return useQuery<Query>(ME_QUERY);
 };
