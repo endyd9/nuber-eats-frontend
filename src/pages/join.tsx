@@ -6,7 +6,6 @@ import {
   CreateAccountMutationVariables,
   UserRole,
 } from "../gql/graphql";
-import logo from "../images/logo.svg";
 import { Button } from "../components/button";
 import { Link, useHistory } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
@@ -79,7 +78,11 @@ export const Join = () => {
         <title>Nuber-Eats | Join</title>
       </Helmet>
       <div className="w-full max-w-screen-sm flex flex-col items-center px-5">
-        <img src={logo} alt="logo" className="w-56 mb-5" />
+        <img
+          src={`${process.env.PUBLIC_URL}/images/logo.svg`}
+          alt="logo"
+          className="w-56 mb-5"
+        />
         <h4 className="w-full font-medium text-start text-2xl">
           Let's get started
         </h4>

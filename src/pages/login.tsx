@@ -2,7 +2,6 @@ import { useForm } from "react-hook-form";
 import { FormError } from "../components/form-error";
 import { gql, useMutation } from "@apollo/client";
 import { LoginMutation, LoginMutationVariables } from "../gql/graphql";
-import logo from "../images/logo.svg";
 import { Button } from "../components/button";
 import { Link } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
@@ -70,7 +69,11 @@ export const Login = () => {
         <title>Nuber-Eats | Login</title>
       </Helmet>
       <div className="w-full max-w-screen-sm flex flex-col items-center px-5">
-        <img src={logo} alt="logo" className="w-56 mb-5" />
+        <img
+          src={`${process.env.PUBLIC_URL}/images/logo.svg`}
+          alt="logo"
+          className="w-56 mb-5"
+        />
         {loginResult?.login.error ? (
           <span className="font-medium text-sm text-start w-full mt-3 text-red-500">
             {loginResult.login.error}

@@ -1,6 +1,5 @@
 import { faUser } from "@fortawesome/free-solid-svg-icons";
 import { useMe } from "../hooks/useMe";
-import logo from "../images/logo.svg";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Link } from "react-router-dom";
 
@@ -16,7 +15,7 @@ export const Header: React.FC = () => {
       <header className=" py-4">
         <div className="px-7 2xl:px-0 max-w-screen-2xl mx-auto flex justify-between items-center">
           <Link to="/">
-            <img src={logo} alt="logo" />
+            <img src={`${process.env.PUBLIC_URL}/images/logo.svg`} alt="logo" />
           </Link>
           <span>
             <Link to="/edit-profile/">
