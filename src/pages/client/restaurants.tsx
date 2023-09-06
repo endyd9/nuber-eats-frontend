@@ -1,13 +1,16 @@
 import { gql, useQuery } from "@apollo/client";
 import { Helmet } from "react-helmet-async";
+import { useEffect, useState } from "react";
+import { Link, useHistory } from "react-router-dom";
+import { Category } from "../../components/category";
+import { Restaurant } from "../../components/restaurant";
+import { useForm } from "react-hook-form";
+import { RESTAURANT_FRAGMENT } from "../../fragments";
 import {
+  RestaurantPartsFragment,
   RestaurantsPageQuery,
   RestaurantsPageQueryVariables,
 } from "../../gql/graphql";
-import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
-import { Category } from "../../components/category";
-import { Restaurant } from "../../components/restaurant";
 
 const RESTAURANTS_QUERY = gql`
   query restaurantsPage($input: RestaurantsInput!) {
@@ -27,18 +30,16 @@ const RESTAURANTS_QUERY = gql`
       totalPages
       totalResult
       results {
-        id
-        name
-        coverImg
-        category {
-          name
-        }
-        address
-        isPromoted
+        ...RestaurantParts
       }
     }
   }
+  ${RESTAURANT_FRAGMENT}
 `;
+
+interface SearchForm {
+  search: string;
+}
 
 export const Restaurants: React.FC = () => {
   const [page, setPage] = useState(1);
@@ -55,22 +56,37 @@ export const Restaurants: React.FC = () => {
 
   const onNextPageClick = () => setPage((current) => current + 1);
   const onPrevPageClick = () => setPage((current) => current - 1);
-
+  const { register, handleSubmit } = useForm<SearchForm>();
+  const history = useHistory();
+  const onSearchSubmit = ({ search }: SearchForm) => {
+    history.push({
+      pathname: "/search",
+      search: `term=${search}`,
+    });
+  };
   return (
     <div>
       <Helmet>
         <title>Nuber-Eats | Home</title>
       </Helmet>
-      <form className="bg-gray-800 w-full py-32 flex items-center justify-center">
+      <form
+        onSubmit={handleSubmit(onSearchSubmit)}
+        className="bg-gray-800 w-full py-32 flex items-center justify-center"
+      >
         <input
           type="search"
           placeholder="검색어를 입력하세요."
-          className="input rounded-md border-0 w-[25%]"
+          className="input rounded-md border-0 lg:w-[30%] w-2/3"
+          {...register("search", {
+            required: true,
+            min: 1,
+          })}
         />
       </form>
       {!loading && (
         <div className="max-w-screen-2xl mx-auto my-5">
-          <div className="flex justify-around max-w-screen-lg mx-auto">
+          {/* 카테고리 */}
+          <div className="flex justify-around lg:max-w-screen-lg mx-auto overflow-x-scroll">
             {data?.allCategories.categories?.map((category) => (
               <Category
                 id={category.id}
@@ -82,18 +98,19 @@ export const Restaurants: React.FC = () => {
               />
             ))}
           </div>
-
-          <div className="grid grid-cols-3 gap-x-5 gap-y-10 my-10">
-            {data?.restaurants.results?.map((restaurant) => (
+          {/* 레스토랑 */}
+          <div className="grid lg:grid-cols-3 gap-x-5 gap-y-10 my-10 mx-10 xl:mx-3">
+            {data?.restaurants.results?.map((restaurant: any) => (
               <Restaurant
                 id={restaurant.id}
                 name={restaurant.name}
                 coverImg={restaurant.coverImg}
-                categoryName={restaurant.category!.name}
+                categoryName={restaurant.category.name}
                 key={restaurant.id}
               />
             ))}
           </div>
+          {/* 페이지 */}
           <div className="grid grid-cols-3 text-center max-w-xs items-center mx-auto mt-10">
             {page > 1 ? (
               <button

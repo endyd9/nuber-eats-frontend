@@ -5,6 +5,7 @@ import { useMe } from "../hooks/useMe";
 import { NotFound } from "../pages/404";
 import { ConfirmEmail } from "../pages/user/confirm-email";
 import { EditProfile } from "../pages/user/edit-profile";
+import { Search } from "../pages/client/search";
 
 const ClientRouter = [
   <Route path="/" exact key={Math.random()}>
@@ -15,6 +16,9 @@ const ClientRouter = [
   </Route>,
   <Route path="/edit-profile" exact key={Math.random()}>
     <EditProfile />
+  </Route>,
+  <Route path="/search" key={Math.random()}>
+    <Search />
   </Route>,
 ];
 
