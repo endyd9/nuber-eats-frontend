@@ -1,16 +1,15 @@
 import { gql, useQuery } from "@apollo/client";
 import { Helmet } from "react-helmet-async";
 import { useState } from "react";
-import { Link, useHistory } from "react-router-dom";
 
 import { Restaurant } from "../../components/restaurant";
-import { useForm } from "react-hook-form";
 import { CATEGORY_FRAGMENT, RESTAURANT_FRAGMENT } from "../../fragments";
 import { Categories } from "../../components/categories";
 import {
   RestaurantsPageQuery,
   RestaurantsPageQueryVariables,
 } from "../../gql/graphql";
+import { SearchBar } from "../../components/search-bar";
 
 const RESTAURANTS_QUERY = gql`
   ${RESTAURANT_FRAGMENT}
@@ -35,7 +34,7 @@ const RESTAURANTS_QUERY = gql`
   }
 `;
 
-interface SearchForm {
+export interface SearchForm {
   search: string;
 }
 
@@ -52,41 +51,29 @@ export const Restaurants: React.FC = () => {
     },
   });
 
+  if (data?.allCategories.categories) {
+    if (!localStorage.getItem("categories")) {
+      localStorage.setItem(
+        "categories",
+        JSON.stringify(data.allCategories.categories)
+      );
+    }
+  }
+
   const onNextPageClick = () => setPage((current) => current + 1);
   const onPrevPageClick = () => setPage((current) => current - 1);
-  const { register, handleSubmit } = useForm<SearchForm>();
-  const history = useHistory();
-  const onSearchSubmit = ({ search }: SearchForm) => {
-    history.push({
-      pathname: "/search",
-      search: `term=${search}`,
-    });
-  };
 
   return (
     <div>
       <Helmet>
         <title>Nuber-Eats | Home</title>
       </Helmet>
-      <form
-        onSubmit={handleSubmit(onSearchSubmit)}
-        className="bg-gray-800 w-full py-32 flex items-center justify-center"
-      >
-        <input
-          type="search"
-          placeholder="검색어를 입력하세요."
-          className="input rounded-md border-0 lg:w-[30%] w-2/3"
-          {...register("search", {
-            required: true,
-            min: 1,
-          })}
-        />
-      </form>
+      <SearchBar />
       {!loading && (
         <div className="max-w-screen-2xl mx-auto my-5">
           {/* 카테고리 */}
           <div className="flex justify-around lg:max-w-screen-lg mx-auto overflow-x-scroll">
-            {data?.allCategories.categories?.map((category) => (
+            {data?.allCategories.categories?.map((category: any) => (
               <Categories
                 id={category.id}
                 coverImg={
@@ -100,12 +87,13 @@ export const Restaurants: React.FC = () => {
           </div>
           {/* 레스토랑 */}
           <div className="grid lg:grid-cols-3 gap-x-5 gap-y-10 my-10 mx-10 xl:mx-3">
-            {data?.restaurants.results?.map((restaurant) => (
+            {data?.restaurants.results?.map((restaurant: any) => (
               <Restaurant
                 id={restaurant.id}
                 name={restaurant.name}
                 coverImg={restaurant.coverImg}
                 categoryName={restaurant.category!.name}
+                isPromoted
                 key={restaurant.id}
               />
             ))}
