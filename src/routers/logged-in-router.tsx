@@ -6,19 +6,23 @@ import { NotFound } from "../pages/404";
 import { ConfirmEmail } from "../pages/user/confirm-email";
 import { EditProfile } from "../pages/user/edit-profile";
 import { Search } from "../pages/client/search";
+import { Category } from "../pages/client/category";
 
 const ClientRouter = [
-  <Route path="/" exact key={Math.random()}>
+  <Route path="/" exact key={1}>
     <Restaurants />
   </Route>,
-  <Route path="/confirm" exact key={Math.random()}>
+  <Route path="/confirm" exact key={2}>
     <ConfirmEmail />
   </Route>,
-  <Route path="/edit-profile" exact key={Math.random()}>
+  <Route path="/edit-profile" exact key={3}>
     <EditProfile />
   </Route>,
-  <Route path="/search" key={Math.random()}>
+  <Route path="/search" key={4}>
     <Search />
+  </Route>,
+  <Route path="/category/:slug" key={5}>
+    <Category />
   </Route>,
 ];
 

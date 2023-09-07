@@ -1,27 +1,26 @@
 import { gql, useQuery } from "@apollo/client";
 import { Helmet } from "react-helmet-async";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Link, useHistory } from "react-router-dom";
-import { Category } from "../../components/category";
+
 import { Restaurant } from "../../components/restaurant";
 import { useForm } from "react-hook-form";
-import { RESTAURANT_FRAGMENT } from "../../fragments";
+import { CATEGORY_FRAGMENT, RESTAURANT_FRAGMENT } from "../../fragments";
+import { Categories } from "../../components/categories";
 import {
-  RestaurantPartsFragment,
   RestaurantsPageQuery,
   RestaurantsPageQueryVariables,
 } from "../../gql/graphql";
 
 const RESTAURANTS_QUERY = gql`
+  ${RESTAURANT_FRAGMENT}
+  ${CATEGORY_FRAGMENT}
   query restaurantsPage($input: RestaurantsInput!) {
     allCategories {
       ok
       error
       categories {
-        id
-        name
-        coverImg
-        restaurantCount
+        ...CategoryParts
       }
     }
     restaurants(input: $input) {
@@ -34,7 +33,6 @@ const RESTAURANTS_QUERY = gql`
       }
     }
   }
-  ${RESTAURANT_FRAGMENT}
 `;
 
 interface SearchForm {
@@ -64,6 +62,7 @@ export const Restaurants: React.FC = () => {
       search: `term=${search}`,
     });
   };
+
   return (
     <div>
       <Helmet>
@@ -88,24 +87,25 @@ export const Restaurants: React.FC = () => {
           {/* 카테고리 */}
           <div className="flex justify-around lg:max-w-screen-lg mx-auto overflow-x-scroll">
             {data?.allCategories.categories?.map((category) => (
-              <Category
+              <Categories
                 id={category.id}
                 coverImg={
                   typeof category.coverImg === "string" ? category.coverImg : ""
                 }
                 name={category.name}
+                slug={category.slug}
                 key={category.id}
               />
             ))}
           </div>
           {/* 레스토랑 */}
           <div className="grid lg:grid-cols-3 gap-x-5 gap-y-10 my-10 mx-10 xl:mx-3">
-            {data?.restaurants.results?.map((restaurant: any) => (
+            {data?.restaurants.results?.map((restaurant) => (
               <Restaurant
                 id={restaurant.id}
                 name={restaurant.name}
                 coverImg={restaurant.coverImg}
-                categoryName={restaurant.category.name}
+                categoryName={restaurant.category!.name}
                 key={restaurant.id}
               />
             ))}
