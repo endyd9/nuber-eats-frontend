@@ -8,7 +8,7 @@ import { Helmet } from "react-helmet-async";
 import { authTokenVar, isLoggedInVar } from "../apollo";
 import { LOCLASROTAGE_TOKEN } from "../constants";
 
-const LOGIN_MUTATION = gql`
+export const LOGIN_MUTATION = gql`
   mutation Login($loginInput: LoginInput!) {
     login(input: $loginInput) {
       ok
@@ -36,6 +36,7 @@ export const Login = () => {
     const {
       login: { ok, token },
     } = data;
+
     if (ok && token) {
       localStorage.setItem(LOCLASROTAGE_TOKEN, token);
       authTokenVar(token);
@@ -75,7 +76,10 @@ export const Login = () => {
           className="w-56 mb-5"
         />
         {loginResult?.login.error ? (
-          <span className="font-medium text-sm text-start w-full mt-3 text-red-500">
+          <span
+            role="alert"
+            className="font-medium text-sm text-start w-full mt-3 text-red-500"
+          >
             {loginResult.login.error}
           </span>
         ) : (
