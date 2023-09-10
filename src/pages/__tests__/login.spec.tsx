@@ -1,9 +1,7 @@
-import { RenderResult, render, waitFor } from "@testing-library/react";
+import { RenderResult, render, waitFor } from "../../test-utils";
 import { LOGIN_MUTATION, Login } from "../login";
 import { ApolloProvider } from "@apollo/client";
 import { MockApolloClient, createMockClient } from "mock-apollo-client";
-import { HelmetProvider } from "react-helmet-async";
-import { BrowserRouter as Router } from "react-router-dom";
 import userEvent from "@testing-library/user-event";
 
 describe("<Login />", () => {
@@ -13,13 +11,9 @@ describe("<Login />", () => {
     await waitFor(() => {
       mockClient = createMockClient();
       renderResult = render(
-        <HelmetProvider>
-          <Router>
-            <ApolloProvider client={mockClient}>
-              <Login />
-            </ApolloProvider>
-          </Router>
-        </HelmetProvider>
+        <ApolloProvider client={mockClient}>
+          <Login />
+        </ApolloProvider>
       );
     });
   });
@@ -91,5 +85,8 @@ describe("<Login />", () => {
     });
     expect(getByRole("alert")).toHaveTextContent("mutation error");
     expect(localStorage.setItem).toHaveBeenCalledWith("nuber-token", "xxxx");
+  });
+  afterAll(() => {
+    jest.clearAllMocks();
   });
 });

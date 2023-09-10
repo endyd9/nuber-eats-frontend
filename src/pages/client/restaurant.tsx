@@ -2,8 +2,9 @@ import { gql, useQuery } from "@apollo/client";
 import { Link, useParams } from "react-router-dom";
 import { RESTAURANT_FRAGMENT } from "../../fragments";
 import { RestaurantQuery, RestaurantQueryVariables } from "../../gql/graphql";
+import { Helmet } from "react-helmet-async";
 
-const RESTAURANT_QUERY = gql`
+export const RESTAURANT_QUERY = gql`
   ${RESTAURANT_FRAGMENT}
   query restaurant($input: RestaurantInput!) {
     restaurant(input: $input) {
@@ -32,33 +33,36 @@ export const Restaurant = () => {
       },
     }
   );
-
   return (
     <div>
       {!loading && (
-        <div
-          className="bg-gray-600 py-32 bg-center bg-cover xl:bg-fixed bg-no-repeat"
-          style={{
-            //@ts-ignore
-            backgroundImage: `url(${data?.restaurant.restaurant.coverImg})`,
-          }}
-        >
-          <div className="bg-white min-w-fit w-1/4 py-8 pl-16 pr-10 rounded-r-lg">
-            <h4 className="text-3xl mb-2">
-              {data?.restaurant.restaurant?.name}
-            </h4>
-            <Link
-              to={`/category/${data?.restaurant.restaurant?.category?.name}`}
-            >
-              <h5 className="text-sm text-gray-400 font-semibold mb-1">
-                {data?.restaurant.restaurant?.category?.name}
-              </h5>
+        <>
+          <Helmet>
+            <title>Nuber-Eats | {data?.restaurant.restaurant?.name + ""}</title>
+          </Helmet>
+          <div
+            className="bg-gray-600 py-32 bg-center bg-cover xl:bg-fixed bg-no-repeat"
+            style={{
+              backgroundImage: `url(${data?.restaurant.restaurant?.coverImg})`,
+            }}
+          >
+            <div role="title" className="bg-white min-w-fit w-1/4 py-8 pl-16 pr-10 rounded-r-lg">
+              <h4 className="text-3xl mb-2">
+                {data?.restaurant.restaurant?.name}
+              </h4>
+              <Link
+                to={`/category/${data?.restaurant.restaurant?.category?.name}`}
+              >
+                <h5 className="text-sm text-gray-400 font-semibold mb-1">
+                  {data?.restaurant.restaurant?.category?.name}
+                </h5>
+              </Link>
               <h6 className="text-sm text-gray-400 font-semibold">
-                {data?.restaurant.restaurant?.address}
-              </h6>
-            </Link>
+                  {data?.restaurant.restaurant?.address}
+                </h6>
+            </div>
           </div>
-        </div>
+        </>
       )}
     </div>
   );

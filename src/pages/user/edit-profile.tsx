@@ -8,7 +8,7 @@ import {
   EditProfileMutationVariables,
 } from "../../gql/graphql";
 
-const EDIT_PROFILE_MUTATION = gql`
+export const EDIT_PROFILE_MUTATION = gql`
   mutation editProfile($input: EditProfileInput!) {
     editProfile(input: $input) {
       ok

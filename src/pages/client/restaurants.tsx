@@ -51,7 +51,7 @@ export const Restaurants: React.FC = () => {
     },
   });
 
-  if (data?.allCategories.categories) {
+  if (data?.allCategories?.categories) {
     if (!localStorage.getItem("categories")) {
       localStorage.setItem(
         "categories",
@@ -73,7 +73,7 @@ export const Restaurants: React.FC = () => {
         <div className="max-w-screen-2xl mx-auto my-5">
           {/* 카테고리 */}
           <div className="flex justify-around lg:max-w-screen-lg mx-auto overflow-x-scroll">
-            {data?.allCategories.categories?.map((category: any) => (
+            {data?.allCategories?.categories?.map((category: any) => (
               <Categories
                 id={category.id}
                 coverImg={
@@ -87,7 +87,7 @@ export const Restaurants: React.FC = () => {
           </div>
           {/* 레스토랑 */}
           <div className="grid lg:grid-cols-3 gap-x-5 gap-y-10 my-10 mx-10 xl:mx-3">
-            {data?.restaurants.results?.map((restaurant: any) => (
+            {data?.restaurants?.results?.map((restaurant: any) => (
               <Restaurant
                 id={restaurant.id}
                 name={restaurant.name}
@@ -102,6 +102,7 @@ export const Restaurants: React.FC = () => {
           <div className="grid grid-cols-3 text-center max-w-xs items-center mx-auto mt-10">
             {page > 1 ? (
               <button
+                role="prevPage"
                 onClick={onPrevPageClick}
                 className="text-2xl font-medium bg-gray-100 rounded-full w-10 h-10 hover:bg-gray-300 mx-auto"
               >
@@ -110,11 +111,12 @@ export const Restaurants: React.FC = () => {
             ) : (
               <div></div>
             )}
-            <span className="mx-3">
+            <span className="mx-3" role="page">
               Page {page} of {data?.restaurants.totalPages}
             </span>
             {page !== data?.restaurants.totalPages ? (
               <button
+                role="nextPage"
                 onClick={onNextPageClick}
                 className="text-2xl font-medium bg-gray-100 rounded-full w-10 h-10 hover:bg-gray-300 mx-auto"
               >

@@ -20,7 +20,7 @@ export const Restaurant: React.FC<ReastaurantProps> = ({
   if (isSearch === true) {
     return (
       <Link to={`/restaurant/${id}`}>
-        <div className="">
+        <div className="" role="restaurant">
           <div className="h-56 w-full mb-3 bg-red-100 overflow-hidden flex items-start">
             <img
               src={coverImg}
@@ -36,7 +36,7 @@ export const Restaurant: React.FC<ReastaurantProps> = ({
   } else {
     return isPromoted === true ? (
       <Link to={`/restaurant/${id}`}>
-        <div className="">
+        <div className="" role="restaurant">
           <div className="h-56 w-full mb-3 bg-red-100 overflow-hidden flex items-start">
             <img
               src={coverImg}

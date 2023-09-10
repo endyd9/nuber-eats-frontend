@@ -1,6 +1,6 @@
 import { gql, useQuery } from "@apollo/client";
 import { useEffect, useState } from "react";
-import { useLocation, useParams } from "react-router-dom";
+import { useHistory, useParams } from "react-router-dom";
 import { CATEGORY_FRAGMENT, RESTAURANT_FRAGMENT } from "../../fragments";
 import { CategoryQuery, CategoryQueryVariables } from "../../gql/graphql";
 import { Helmet } from "react-helmet-async";
@@ -8,7 +8,7 @@ import { SearchBar } from "../../components/search-bar";
 import { Categories } from "../../components/categories";
 import { Restaurant } from "../../components/restaurant";
 
-const CATEGORY_QUERY = gql`
+export const CATEGORY_QUERY = gql`
   ${RESTAURANT_FRAGMENT}
   ${CATEGORY_FRAGMENT}
   query category($input: CategoryInput!) {
@@ -33,6 +33,8 @@ interface categoryParams {
 
 export const Category = () => {
   const [page, setPage] = useState(1);
+  const [categories, setCategories] = useState([]);
+
   const { slug } = useParams<categoryParams>();
   const { data, loading } = useQuery<CategoryQuery, CategoryQueryVariables>(
     CATEGORY_QUERY,
@@ -45,10 +47,18 @@ export const Category = () => {
       },
     }
   );
-
-  const categories = JSON.parse(localStorage.getItem("categories") + "");
   const onNextPageClick = () => setPage((current) => current + 1);
   const onPrevPageClick = () => setPage((current) => current - 1);
+
+  const history = useHistory();
+  useEffect(() => {
+    const loadCategory = JSON.parse(localStorage.getItem("categories") + "");
+    if (!loadCategory) {
+      history.push("/");
+    } else {
+      setCategories(loadCategory);
+    }
+  }, []);
 
   return (
     <div>
