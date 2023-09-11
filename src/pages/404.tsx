@@ -2,7 +2,7 @@ import { Helmet } from "react-helmet-async";
 import { Link } from "react-router-dom";
 
 export const NotFound = () => (
-  <div className="mt-72 flex flex-col items-center justify-center">
+  <div className="mt-[20%] flex flex-col items-center justify-center">
     <Helmet>
       <title>Nuber-Eats | NotFound</title>
     </Helmet>

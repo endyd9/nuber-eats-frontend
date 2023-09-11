@@ -22,6 +22,9 @@ const documents = {
     "\n  \n  query serachRestaurant($input: SearchRestaurantInput!) {\n    serachRestaurant(input: $input) {\n      ok\n      error\n      totalPages\n      totalResult\n      restaurants {\n        ...RestaurantParts\n      }\n    }\n  }\n": types.SerachRestaurantDocument,
     "\n  mutation createAccount($createAccountInput: CreateAccountInput!) {\n    createAccount(input: $createAccountInput) {\n      ok\n      error\n    }\n  }\n": types.CreateAccountDocument,
     "\n  mutation Login($loginInput: LoginInput!) {\n    login(input: $loginInput) {\n      ok\n      token\n      error\n    }\n  }\n": types.LoginDocument,
+    "\n  mutation createRestaurant($input: CreateRestaurantInput!) {\n    createRestaurant(input: $input) {\n      ok\n      error\n    }\n  }\n": types.CreateRestaurantDocument,
+    "\n  query allCategories {\n    allCategories {\n      ok\n      error\n      categories {\n        id\n        name\n      }\n    }\n  }\n": types.AllCategoriesDocument,
+    "\n  \n  query myRestaurants($input: MyRestaurantsInput!) {\n    myRestaurants(input: $input) {\n      ok\n      error\n      results {\n        ...RestaurantParts\n      }\n      totalResult\n      totalPages\n    }\n  }\n": types.MyRestaurantsDocument,
     "\n  mutation verifyEmail($input: VerifyEmailInput!) {\n    verifyEmail(input: $input) {\n      ok\n      error\n    }\n  }\n": types.VerifyEmailDocument,
     "\n  mutation editProfile($input: EditProfileInput!) {\n    editProfile(input: $input) {\n      ok\n      error\n    }\n  }\n": types.EditProfileDocument,
 };
@@ -76,6 +79,18 @@ export function gql(source: "\n  mutation createAccount($createAccountInput: Cre
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function gql(source: "\n  mutation Login($loginInput: LoginInput!) {\n    login(input: $loginInput) {\n      ok\n      token\n      error\n    }\n  }\n"): (typeof documents)["\n  mutation Login($loginInput: LoginInput!) {\n    login(input: $loginInput) {\n      ok\n      token\n      error\n    }\n  }\n"];
+/**
+ * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function gql(source: "\n  mutation createRestaurant($input: CreateRestaurantInput!) {\n    createRestaurant(input: $input) {\n      ok\n      error\n    }\n  }\n"): (typeof documents)["\n  mutation createRestaurant($input: CreateRestaurantInput!) {\n    createRestaurant(input: $input) {\n      ok\n      error\n    }\n  }\n"];
+/**
+ * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function gql(source: "\n  query allCategories {\n    allCategories {\n      ok\n      error\n      categories {\n        id\n        name\n      }\n    }\n  }\n"): (typeof documents)["\n  query allCategories {\n    allCategories {\n      ok\n      error\n      categories {\n        id\n        name\n      }\n    }\n  }\n"];
+/**
+ * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function gql(source: "\n  \n  query myRestaurants($input: MyRestaurantsInput!) {\n    myRestaurants(input: $input) {\n      ok\n      error\n      results {\n        ...RestaurantParts\n      }\n      totalResult\n      totalPages\n    }\n  }\n"): (typeof documents)["\n  \n  query myRestaurants($input: MyRestaurantsInput!) {\n    myRestaurants(input: $input) {\n      ok\n      error\n      results {\n        ...RestaurantParts\n      }\n      totalResult\n      totalPages\n    }\n  }\n"];
 /**
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */

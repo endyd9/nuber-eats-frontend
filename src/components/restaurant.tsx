@@ -24,7 +24,7 @@ export const Restaurant: React.FC<ReastaurantProps> = ({
           <div className="h-56 w-full mb-3 bg-red-100 overflow-hidden flex items-start">
             <img
               src={coverImg}
-              className="mb-24 hover:scale-110 transition-transform"
+              className="mb-24 hover:scale-110 transition-transform min-w-full"
             />
           </div>
           <h3 className="text-lg font-medium">{name}</h3>
@@ -40,7 +40,7 @@ export const Restaurant: React.FC<ReastaurantProps> = ({
           <div className="h-56 w-full mb-3 bg-red-100 overflow-hidden flex items-start">
             <img
               src={coverImg}
-              className="mb-24 hover:scale-110 transition-transform"
+              className="mb-24 hover:scale-110 transition-transform min-w-full"
             />
           </div>
           <h3 className="text-lg font-medium">{name}</h3>

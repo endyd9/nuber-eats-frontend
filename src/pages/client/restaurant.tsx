@@ -1,3 +1,5 @@
+//@ts-nocheck
+
 import { gql, useQuery } from "@apollo/client";
 import { Link, useParams } from "react-router-dom";
 import { RESTAURANT_FRAGMENT } from "../../fragments";
@@ -46,7 +48,10 @@ export const Restaurant = () => {
               backgroundImage: `url(${data?.restaurant.restaurant?.coverImg})`,
             }}
           >
-            <div role="title" className="bg-white min-w-fit w-1/4 py-8 pl-16 pr-10 rounded-r-lg">
+            <div
+              role="title"
+              className="bg-white min-w-fit w-1/4 py-8 pl-16 pr-10 rounded-r-lg"
+            >
               <h4 className="text-3xl mb-2">
                 {data?.restaurant.restaurant?.name}
               </h4>
@@ -58,8 +63,8 @@ export const Restaurant = () => {
                 </h5>
               </Link>
               <h6 className="text-sm text-gray-400 font-semibold">
-                  {data?.restaurant.restaurant?.address}
-                </h6>
+                {data?.restaurant.restaurant?.address}
+              </h6>
             </div>
           </div>
         </>
