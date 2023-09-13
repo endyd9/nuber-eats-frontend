@@ -49,7 +49,7 @@ export const CreateRestaurant = () => {
   >(CREATE_RESTAURANT_QUERY);
 
   const client = useApolloClient();
-  const history = useHistory()
+  const history = useHistory();
   const [imgUrl, setImgUrl] = useState("");
   const onCompleted = (data: CreateRestaurantMutation) => {
     const { name, address, categoryName } = getValues();
@@ -95,7 +95,7 @@ export const CreateRestaurant = () => {
           },
         },
       });
-      history.push("/")
+      history.push("/");
     }
   };
 
@@ -176,7 +176,11 @@ export const CreateRestaurant = () => {
             <option key={category.id}>{category.name}</option>
           ))}
         </select>
-        <input type="file" accept="image/*" {...register("file", {required: "이미지를 선택하세요."})} />
+        <input
+          type="file"
+          accept="image/*"
+          {...register("file", { required: "이미지를 선택하세요." })}
+        />
         <Button
           loading={uploading}
           canClick={isValid}

@@ -11,8 +11,6 @@ export const Menu: React.FC<MenuProps> = ({
   price,
   photo,
 }) => {
-  console.log(photo);
-
   return (
     <div className="cursor-default pt-5 pb-3 px-8 border hover:border-gray-800 transition-all flex justify-between relative">
       <div>

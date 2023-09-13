@@ -1,6 +1,6 @@
 //@ts-nocheck
 
-import { gql, useQuery } from "@apollo/client";
+import { gql, useMutation, useQuery } from "@apollo/client";
 import { Link, useParams } from "react-router-dom";
 import {
   DISH_FARGMENT,
@@ -8,6 +8,8 @@ import {
   RESTAURANT_FRAGMENT,
 } from "../../fragments";
 import {
+  CreatePaymentMutation,
+  CreatePaymentMutationVariables,
   MyRestaurantQuery,
   MyRestaurantQueryVariables,
 } from "../../gql/graphql";
@@ -21,6 +23,7 @@ import {
   VictoryTooltip,
   VictoryVoronoiContainer,
 } from "victory";
+import { useMe } from "../../hooks/useMe";
 
 interface Params {
   id: string;
@@ -47,8 +50,29 @@ export const MY_RESTAURANT = gql`
   }
 `;
 
+export const CREATE_PAYMENT_MUTATION = gql`
+  mutation createPayment($input: CreatePaymentInput!) {
+    createPayment(input: $input) {
+      ok
+      error
+    }
+  }
+`;
+
 export const MyRestaurant = () => {
   const { id } = useParams<Params>();
+
+  const onCompleted = (data: CreatePaymentMutation) => {
+    if (data.createPayment.ok) {
+      alert("프로모션이 적용되었습니다.");
+    }
+  };
+  const [createPaymentMutation, { loading: mLoading }] = useMutation<
+    CreatePaymentMutation,
+    CreatePaymentMutationVariables
+  >(CREATE_PAYMENT_MUTATION, {
+    onCompleted,
+  });
 
   const { data, loading } = useQuery<
     MyRestaurantQuery,
@@ -61,10 +85,36 @@ export const MyRestaurant = () => {
     },
   });
 
+  const { data: userData } = useMe();
+  const triggerPaddle = () => {
+    // I Hate Paddle
+    // if (userData?.me.email) {
+    //   window.Paddle.Setup({
+    //     vender: 177572,
+    //   });
+    //   window.Paddle.Checkout.open({
+    //     product: pro_01ha6vhtt1m0ev789mjpd1dm8j,
+    //     email: userData.me.email,
+    //   });
+    // }
+
+    if (window.confirm("결제 하시겠습니까?")) {
+      createPaymentMutation({
+        variables: {
+          input: {
+            transactionId: "iDontHaveTransactionId",
+            restaurantId: +id,
+          },
+        },
+      });
+    }
+  };
+
   return (
     <div>
       <Helmet>
         <title>Nuber-Eats | My Restaurant</title>
+        <script src="https://cdn.paddle.com/paddle/paddle.js"></script>
       </Helmet>
       <div>
         {!loading && (
@@ -85,12 +135,12 @@ export const MyRestaurant = () => {
               >
                 메뉴추가
               </Link>
-              <Link
-                to={""}
+              <span
+                onClick={triggerPaddle}
                 className="bg-lime-700 text-white py-3 px-10 hover:bg-lime-800"
               >
                 프로모션 등록
-              </Link>
+              </span>
             </div>
           </>
         )}
