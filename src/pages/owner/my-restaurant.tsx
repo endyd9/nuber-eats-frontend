@@ -107,6 +107,7 @@ export const MyRestaurant = () => {
                     name={dish.name}
                     description={dish.description}
                     price={dish.price}
+                    photo={dish.photo}
                   />
                 ))}
               </div>
