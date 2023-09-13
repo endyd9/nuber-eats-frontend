@@ -126,9 +126,9 @@ export const Login = () => {
           <Button canClick={isValid} loading={loading} acttionText="Login" />
         </form>
         <div>
-          New to Nuber?{" "}
+          처음 오셨나요?{" "}
           <Link to="/join" className="text-lime-600 hover:underline">
-            Create an Account
+            계정 생성하기
           </Link>
         </div>
       </div>

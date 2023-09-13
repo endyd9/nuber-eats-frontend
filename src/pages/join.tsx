@@ -135,9 +135,9 @@ export const Join = () => {
           )}
         </form>
         <div>
-          Already have an account?{" "}
+          계정이 있으신가요?{" "}
           <Link to="/" className="text-lime-600 hover:underline">
-            Login Now
+            로그인 하기
           </Link>
         </div>
       </div>

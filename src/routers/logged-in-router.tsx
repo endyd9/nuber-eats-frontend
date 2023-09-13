@@ -8,8 +8,10 @@ import { EditProfile } from "../pages/user/edit-profile";
 import { Search } from "../pages/client/search";
 import { Category } from "../pages/client/category";
 import { Restaurant } from "../pages/client/restaurant";
-import { MyRestaurants } from "../pages/owner/my-restaurant";
+import { MyRestaurants } from "../pages/owner/my-restaurants";
 import { CreateRestaurant } from "../pages/owner/create-restaurant";
+import { MyRestaurant } from "../pages/owner/my-restaurant";
+import { AddMenu } from "../pages/owner/add-menu";
 
 interface Routers {
   path: string;
@@ -37,7 +39,7 @@ const clientRouters: Routers[] = [
     component: <Search />,
   },
   {
-    path: "/category/slug",
+    path: "/category/:slug",
     component: <Category />,
   },
   {
@@ -54,6 +56,14 @@ const ownerRouters: Routers[] = [
   {
     path: "/create-restaurant",
     component: <CreateRestaurant />,
+  },
+  {
+    path: "/restaurant/:id",
+    component: <MyRestaurant />,
+  },
+  {
+    path: "/restaurant/:id/add-menu",
+    component: <AddMenu />,
   },
 ];
 

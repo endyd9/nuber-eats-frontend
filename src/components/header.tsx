@@ -1,10 +1,22 @@
-import { faUser } from "@fortawesome/free-solid-svg-icons";
+import { faSignOut, faUser } from "@fortawesome/free-solid-svg-icons";
 import { useMe } from "../hooks/useMe";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
+import { useApolloClient } from "@apollo/client";
+import { isLoggedInVar } from "../apollo";
 
 export const Header: React.FC = () => {
   const { data } = useMe();
+  const history = useHistory();
+  const client = useApolloClient();
+
+  const onLogOutClick = async () => {
+    alert("로그아웃 되었습니다.");
+    localStorage.removeItem("nuber-token");
+    await client.clearStore();
+    isLoggedInVar(false);
+    history.push("/");
+  };
 
   return (
     <>
@@ -20,8 +32,11 @@ export const Header: React.FC = () => {
           </Link>
           <span>
             <Link to="/edit-profile/">
-              <FontAwesomeIcon icon={faUser} className="text-2xl" />
+              <FontAwesomeIcon icon={faUser} className="text-2xl mr-5" />
             </Link>
+            <button onClick={onLogOutClick}>
+              <FontAwesomeIcon icon={faSignOut} className="text-2xl" />
+            </button>
           </span>
         </div>
       </header>

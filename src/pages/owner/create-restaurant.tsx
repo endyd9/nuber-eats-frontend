@@ -1,4 +1,4 @@
-import { gql, useMutation, useQuery } from "@apollo/client";
+import { gql, useApolloClient, useMutation, useQuery } from "@apollo/client";
 import {
   AllCategoriesQuery,
   AllCategoriesQueryVariables,
@@ -9,12 +9,15 @@ import { useForm } from "react-hook-form";
 import { Button } from "../../components/button";
 import { Helmet } from "react-helmet-async";
 import { useState } from "react";
+import { MY_RESTAURANTS_QUERY } from "./my-restaurants";
+import { useHistory } from "react-router-dom";
 
 const CREATE_RESTAURANT_MUTATION = gql`
   mutation createRestaurant($input: CreateRestaurantInput!) {
     createRestaurant(input: $input) {
       ok
       error
+      restaurantId
     }
   }
 `;
@@ -45,12 +48,54 @@ export const CreateRestaurant = () => {
     AllCategoriesQueryVariables
   >(CREATE_RESTAURANT_QUERY);
 
+  const client = useApolloClient();
+  const history = useHistory()
+  const [imgUrl, setImgUrl] = useState("");
   const onCompleted = (data: CreateRestaurantMutation) => {
+    const { name, address, categoryName } = getValues();
     const {
-      createRestaurant: { ok, error },
+      createRestaurant: { ok, error, restaurantId },
     } = data;
     if (ok) {
       setUploading(false);
+      const queryResult = client.readQuery({
+        query: MY_RESTAURANTS_QUERY,
+        variables: {
+          input: {
+            page: 1,
+          },
+        },
+      });
+      client.writeQuery({
+        query: MY_RESTAURANTS_QUERY,
+        variables: {
+          input: {
+            page: 1,
+          },
+        },
+        data: {
+          myRestaurants: {
+            ...queryResult.myRestaurants,
+            results: [
+              {
+                name,
+                address,
+                category: {
+                  name: categoryName,
+                  __typename: "Category",
+                  __proto__: Object,
+                },
+                coverImg: imgUrl,
+                id: 11,
+                isPromoted: false,
+                __typename: "Restaurant",
+              },
+              ...queryResult.myRestaurants.results,
+            ],
+          },
+        },
+      });
+      history.push("/")
     }
   };
 
@@ -64,6 +109,7 @@ export const CreateRestaurant = () => {
   const {
     register,
     handleSubmit,
+    getValues,
     formState: { errors, isValid },
   } = useForm<FormProps>({
     defaultValues: {
@@ -84,6 +130,7 @@ export const CreateRestaurant = () => {
           body: formBody,
         })
       ).json();
+      setImgUrl(coverImg);
       createRestaurantMutation({
         variables: {
           //@ts-ignore
@@ -129,7 +176,7 @@ export const CreateRestaurant = () => {
             <option key={category.id}>{category.name}</option>
           ))}
         </select>
-        <input type="file" accept="image/*" {...register("file")} />
+        <input type="file" accept="image/*" {...register("file", {required: "이미지를 선택하세요."})} />
         <Button
           loading={uploading}
           canClick={isValid}
