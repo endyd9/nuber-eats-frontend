@@ -12,6 +12,7 @@ import { MyRestaurants } from "../pages/owner/my-restaurants";
 import { CreateRestaurant } from "../pages/owner/create-restaurant";
 import { MyRestaurant } from "../pages/owner/my-restaurant";
 import { AddMenu } from "../pages/owner/add-menu";
+import { Order } from "../pages/order";
 
 interface Routers {
   path: string;
@@ -26,6 +27,10 @@ const commonRouters: Routers[] = [
   {
     path: "/edit-profile",
     component: <EditProfile />,
+  },
+  {
+    path: "/orders/:id",
+    component: <Order />,
   },
 ];
 
