@@ -1,7 +1,7 @@
 //@ts-nocheck
 
-import { gql, useMutation, useQuery } from "@apollo/client";
-import { Link, useParams } from "react-router-dom";
+import { gql, useMutation, useQuery, useSubscription } from "@apollo/client";
+import { Link, useHistory, useParams } from "react-router-dom";
 import {
   DISH_FARGMENT,
   ORDERS_FRAGMENT,
@@ -12,6 +12,8 @@ import {
   CreatePaymentMutationVariables,
   MyRestaurantQuery,
   MyRestaurantQueryVariables,
+  PendingOrdersSubscription,
+  PendingOrdersSubscriptionVariables,
 } from "../../gql/graphql";
 import { Helmet } from "react-helmet-async";
 import { Menu } from "../../components/menu";
@@ -23,7 +25,7 @@ import {
   VictoryTooltip,
   VictoryVoronoiContainer,
 } from "victory";
-import { useMe } from "../../hooks/useMe";
+import { useEffect } from "react";
 
 interface Params {
   id: string;
@@ -59,6 +61,14 @@ export const CREATE_PAYMENT_MUTATION = gql`
   }
 `;
 
+export const PENDING_ORDER = gql`
+  subscription pendingOrders {
+    pendingOrders {
+      id
+    }
+  }
+`;
+
 export const MyRestaurant = () => {
   const { id } = useParams<Params>();
 
@@ -67,7 +77,7 @@ export const MyRestaurant = () => {
       alert("프로모션이 적용되었습니다.");
     }
   };
-  const [createPaymentMutation, { loading: mLoading }] = useMutation<
+  const [createPaymentMutation] = useMutation<
     CreatePaymentMutation,
     CreatePaymentMutationVariables
   >(CREATE_PAYMENT_MUTATION, {
@@ -85,7 +95,11 @@ export const MyRestaurant = () => {
     },
   });
 
-  const { data: userData } = useMe();
+  const { data: subData } = useSubscription<
+    PendingOrdersSubscription,
+    PendingOrdersSubscriptionVariables
+  >(PENDING_ORDER);
+
   const triggerPaddle = () => {
     // I Hate Paddle
     // if (userData?.me.email) {
@@ -110,6 +124,13 @@ export const MyRestaurant = () => {
     }
   };
 
+  const history = useHistory();
+
+  useEffect(() => {
+    if (subData?.pendingOrders.id) {
+      history.push(`/orders/${subData.pendingOrders.id}`);
+    }
+  }, [subData]);
   return (
     <div>
       <Helmet>

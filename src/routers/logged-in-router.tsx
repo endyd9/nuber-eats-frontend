@@ -13,6 +13,8 @@ import { CreateRestaurant } from "../pages/owner/create-restaurant";
 import { MyRestaurant } from "../pages/owner/my-restaurant";
 import { AddMenu } from "../pages/owner/add-menu";
 import { Order } from "../pages/order";
+import { Dashboard } from "../pages/driver/dashboard";
+import { UserRole } from "../gql/graphql";
 
 interface Routers {
   path: string;
@@ -72,7 +74,12 @@ const ownerRouters: Routers[] = [
   },
 ];
 
-const deliveryRouters: Routers[] = [];
+const deliveryRouters: Routers[] = [
+  {
+    path: "/",
+    component: <Dashboard />,
+  },
+];
 
 export const LoggedInRouter = () => {
   const { data, loading, error } = useMe();
@@ -89,19 +96,19 @@ export const LoggedInRouter = () => {
     <Router>
       <Header />
       <Switch>
-        {data.me.role === "Client" &&
+        {data.me.role === UserRole.Client &&
           clientRouters.map((route) => (
             <Route exact key={route.path} path={route.path}>
               {route.component}
             </Route>
           ))}
-        {data.me.role === "Owner" &&
+        {data.me.role === UserRole.Owner &&
           ownerRouters.map((route) => (
             <Route exact key={route.path} path={route.path}>
               {route.component}
             </Route>
           ))}
-        {data.me.role === "Delivery" &&
+        {data.me.role === UserRole.Delivery &&
           deliveryRouters.map((route) => (
             <Route exact key={route.path} path={route.path}>
               {route.component}

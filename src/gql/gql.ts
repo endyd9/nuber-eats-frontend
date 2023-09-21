@@ -23,15 +23,19 @@ const documents = {
     "\n  mutation CreateOrder($input: CreateOrderInput!) {\n    CreateOrder(input: $input) {\n      ok\n      error\n      orderId\n    }\n  }\n": types.CreateOrderDocument,
     "\n  \n  \n  query restaurantsPage($input: RestaurantsInput!) {\n    allCategories {\n      ok\n      error\n      categories {\n        ...CategoryParts\n      }\n    }\n    restaurants(input: $input) {\n      ok\n      error\n      totalPages\n      totalResult\n      results {\n        ...RestaurantParts\n      }\n    }\n  }\n": types.RestaurantsPageDocument,
     "\n  \n  query serachRestaurant($input: SearchRestaurantInput!) {\n    serachRestaurant(input: $input) {\n      ok\n      error\n      totalPages\n      totalResult\n      restaurants {\n        ...RestaurantParts\n      }\n    }\n  }\n": types.SerachRestaurantDocument,
+    "\n  subscription cookedOrders {\n    cookedOrders {\n      id\n      status\n      total\n      driver {\n        email\n      }\n      customer {\n        email\n      }\n      restaurant {\n        name\n      }\n    }\n  }\n": types.CookedOrdersDocument,
+    "\n  mutation takeOrder($input: TakeOrderInput!) {\n    takeOrder(input: $input) {\n      ok\n      error\n    }\n  }\n": types.TakeOrderDocument,
     "\n  mutation createAccount($createAccountInput: CreateAccountInput!) {\n    createAccount(input: $createAccountInput) {\n      ok\n      error\n    }\n  }\n": types.CreateAccountDocument,
     "\n  mutation Login($loginInput: LoginInput!) {\n    login(input: $loginInput) {\n      ok\n      token\n      error\n    }\n  }\n": types.LoginDocument,
     "\n  query getOrder($input: GetOrderInput!) {\n    getOrder(input: $input) {\n      ok\n      error\n      order {\n        id\n        status\n        total\n        driver {\n          email\n        }\n        customer {\n          email\n        }\n        restaurant {\n          name\n        }\n      }\n    }\n  }\n": types.GetOrderDocument,
     "\n  subscription orderUpdates($input: OrderUpdatesInput!) {\n    orderUpdates(input: $input) {\n      id\n      status\n      total\n      driver {\n        email\n      }\n      customer {\n        email\n      }\n      restaurant {\n        name\n      }\n    }\n  }\n": types.OrderUpdatesDocument,
+    "\n  mutation editOrder($input: EditOrderInput!) {\n    editOrder(input: $input) {\n      ok\n      error\n    }\n  }\n": types.EditOrderDocument,
     "\n  mutation createDish($input: CreateDishInput!) {\n    createDish(input: $input) {\n      ok\n      error\n    }\n  }\n": types.CreateDishDocument,
     "\n  mutation createRestaurant($input: CreateRestaurantInput!) {\n    createRestaurant(input: $input) {\n      ok\n      error\n      restaurantId\n    }\n  }\n": types.CreateRestaurantDocument,
     "\n  query allCategories {\n    allCategories {\n      ok\n      error\n      categories {\n        id\n        name\n      }\n    }\n  }\n": types.AllCategoriesDocument,
     "\n  \n  \n  \n  query myRestaurant($input: MyRestaurantInput!) {\n    myRestaurant(input: $input) {\n      ok\n      error\n      restaurant {\n        ...RestaurantParts\n        menu {\n          ...MenuParts\n        }\n        orders {\n          ...OrderParts\n        }\n      }\n    }\n  }\n": types.MyRestaurantDocument,
     "\n  mutation createPayment($input: CreatePaymentInput!) {\n    createPayment(input: $input) {\n      ok\n      error\n    }\n  }\n": types.CreatePaymentDocument,
+    "\n  subscription pendingOrders {\n    pendingOrders {\n      id\n    }\n  }\n": types.PendingOrdersDocument,
     "\n  \n  query myRestaurants($input: MyRestaurantsInput!) {\n    myRestaurants(input: $input) {\n      ok\n      error\n      results {\n        ...RestaurantParts\n      }\n      totalResult\n      totalPages\n    }\n  }\n": types.MyRestaurantsDocument,
     "\n  mutation verifyEmail($input: VerifyEmailInput!) {\n    verifyEmail(input: $input) {\n      ok\n      error\n    }\n  }\n": types.VerifyEmailDocument,
     "\n  mutation editProfile($input: EditProfileInput!) {\n    editProfile(input: $input) {\n      ok\n      error\n    }\n  }\n": types.EditProfileDocument,
@@ -94,6 +98,14 @@ export function gql(source: "\n  \n  query serachRestaurant($input: SearchRestau
 /**
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
+export function gql(source: "\n  subscription cookedOrders {\n    cookedOrders {\n      id\n      status\n      total\n      driver {\n        email\n      }\n      customer {\n        email\n      }\n      restaurant {\n        name\n      }\n    }\n  }\n"): (typeof documents)["\n  subscription cookedOrders {\n    cookedOrders {\n      id\n      status\n      total\n      driver {\n        email\n      }\n      customer {\n        email\n      }\n      restaurant {\n        name\n      }\n    }\n  }\n"];
+/**
+ * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function gql(source: "\n  mutation takeOrder($input: TakeOrderInput!) {\n    takeOrder(input: $input) {\n      ok\n      error\n    }\n  }\n"): (typeof documents)["\n  mutation takeOrder($input: TakeOrderInput!) {\n    takeOrder(input: $input) {\n      ok\n      error\n    }\n  }\n"];
+/**
+ * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
 export function gql(source: "\n  mutation createAccount($createAccountInput: CreateAccountInput!) {\n    createAccount(input: $createAccountInput) {\n      ok\n      error\n    }\n  }\n"): (typeof documents)["\n  mutation createAccount($createAccountInput: CreateAccountInput!) {\n    createAccount(input: $createAccountInput) {\n      ok\n      error\n    }\n  }\n"];
 /**
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
@@ -107,6 +119,10 @@ export function gql(source: "\n  query getOrder($input: GetOrderInput!) {\n    g
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function gql(source: "\n  subscription orderUpdates($input: OrderUpdatesInput!) {\n    orderUpdates(input: $input) {\n      id\n      status\n      total\n      driver {\n        email\n      }\n      customer {\n        email\n      }\n      restaurant {\n        name\n      }\n    }\n  }\n"): (typeof documents)["\n  subscription orderUpdates($input: OrderUpdatesInput!) {\n    orderUpdates(input: $input) {\n      id\n      status\n      total\n      driver {\n        email\n      }\n      customer {\n        email\n      }\n      restaurant {\n        name\n      }\n    }\n  }\n"];
+/**
+ * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function gql(source: "\n  mutation editOrder($input: EditOrderInput!) {\n    editOrder(input: $input) {\n      ok\n      error\n    }\n  }\n"): (typeof documents)["\n  mutation editOrder($input: EditOrderInput!) {\n    editOrder(input: $input) {\n      ok\n      error\n    }\n  }\n"];
 /**
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
@@ -127,6 +143,10 @@ export function gql(source: "\n  \n  \n  \n  query myRestaurant($input: MyRestau
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function gql(source: "\n  mutation createPayment($input: CreatePaymentInput!) {\n    createPayment(input: $input) {\n      ok\n      error\n    }\n  }\n"): (typeof documents)["\n  mutation createPayment($input: CreatePaymentInput!) {\n    createPayment(input: $input) {\n      ok\n      error\n    }\n  }\n"];
+/**
+ * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function gql(source: "\n  subscription pendingOrders {\n    pendingOrders {\n      id\n    }\n  }\n"): (typeof documents)["\n  subscription pendingOrders {\n    pendingOrders {\n      id\n    }\n  }\n"];
 /**
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
