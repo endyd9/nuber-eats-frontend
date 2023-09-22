@@ -49,12 +49,9 @@
     "typescript": "^5.2.2"
   },
   "scripts": {
-    "install": "npm i -force",
-    "tailwind:prodbuild": "NODE_ENV=production npm run tailwind:build",
-    "tailwind:build": "npx tailwindcss-cli@latest build -i src/styles/tailwind.css -o src/styles/styles.css ✅--minify",
+    "tailwind:build": "npx tailwindcss-cli@latest build -i src/styles/tailwind.css -o src/styles/styles.css",
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "prebuild": "npm run tailwind:prodbuild",
     "test": "react-scripts test",
     "test:cov": "npm test -- --coverage --watchAll=false",
     "eject": "react-scripts eject",
