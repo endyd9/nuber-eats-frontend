@@ -49,6 +49,7 @@
     "typescript": "^5.2.2"
   },
   "scripts": {
+    "install": "npm i -force",
     "tailwind:prodbuild": "NODE_ENV=production npm run tailwind:build",
     "tailwind:build": "npx tailwindcss-cli@latest build -i src/styles/tailwind.css -o src/styles/styles.css ✅--minify",
     "start": "react-scripts start",
