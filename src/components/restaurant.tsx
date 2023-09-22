@@ -2,11 +2,11 @@ import { Link } from "react-router-dom";
 
 interface ReastaurantProps {
   id: number;
-  coverImg: string | undefined;
+  coverImg?: string;
   name: string;
   categoryName: string;
-  isPromoted: boolean | undefined;
-  isSearch: boolean | undefined;
+  isPromoted?: boolean;
+  isSearch?: boolean;
 }
 
 export const Restaurant: React.FC<ReastaurantProps> = ({
