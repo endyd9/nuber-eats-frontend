@@ -18,14 +18,14 @@ export const authTokenVar = makeVar(token);
 const httpLink = createHttpLink({
   uri:
     process.env.NODE_ENV === "production"
-      ? "https://52.54.187.183:3000/graphql"
+      ? "http://52.54.187.183:3000/graphql"
       : "http://localhost:4000/graphql",
 });
 
 const wsLink = new WebSocketLink({
   uri:
     process.env.NODE_ENV === "production"
-      ? "wss://52.54.187.183:3000/graphql"
+      ? "ws://52.54.187.183:3000/graphql"
       : "ws://localhost:4000/graphql",
   options: {
     reconnect: true,
