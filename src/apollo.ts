@@ -18,15 +18,15 @@ export const authTokenVar = makeVar(token);
 const httpLink = createHttpLink({
   uri:
     process.env.NODE_ENV === "production"
-      ? "https://52.54.187.183:3000/graphql"
-      : "http://localhost:4000/graphql",
+      ? "https://8a0e-52-54-187-183.ngrok-free.app/graphql"
+      : "http://52.54.187.183:3000/graphql",
 });
 
 const wsLink = new WebSocketLink({
   uri:
     process.env.NODE_ENV === "production"
-      ? "wss://52.54.187.183:3000/graphql"
-      : "ws://localhost:4000/graphql",
+      ? "wss://8a0e-52-54-187-183.ngrok-free.app/graphql"
+      : "ws://52.54.187.183:3000/graphql",
   options: {
     reconnect: true,
     connectionParams: {
