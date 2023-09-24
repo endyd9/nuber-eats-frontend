@@ -17,8 +17,8 @@ interface Parmas {
 interface Form {
   name: string;
   price: string;
-  description: string
-  file: FileList
+  description: string;
+  file: FileList;
   [key: string]: any;
 }
 
@@ -60,7 +60,13 @@ export const AddMenu = () => {
     formState: { errors, isValid },
   } = useForm<Form>();
 
-  const onSubmit = async ({ name, price, description, file,  ...rest }: Form) => {
+  const onSubmit = async ({
+    name,
+    price,
+    description,
+    file,
+    ...rest
+  }: Form) => {
     const optionObj = options.map((id) => ({
       name: rest[`${id}-OptionName`],
       extra: +rest[`${id}-OptionExtra`],
@@ -82,7 +88,7 @@ export const AddMenu = () => {
           description,
           restaurantId: +restaurantId,
           options: optionObj,
-          photo
+          photo,
         },
       },
     });
@@ -110,7 +116,7 @@ export const AddMenu = () => {
           type="number"
           placeholder="Price"
           defaultValue={0}
-          {...register("price", { required: true, minLength: 5 })}
+          {...register("price", { required: true, minLength: 3 })}
         />
         <input
           className="input"
@@ -119,7 +125,7 @@ export const AddMenu = () => {
           {...register("description", { required: true })}
         />
         <label htmlFor="file">이미지</label>
-                <input type="file" {...register("file")} />
+        <input type="file" {...register("file")} />
         <h3 className="font-bold">옵션</h3>
         <button
           onClick={onAddOptionClick}
