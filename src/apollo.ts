@@ -19,14 +19,14 @@ const httpLink = createHttpLink({
   uri:
     process.env.NODE_ENV === "production"
       ? "https://dy-api.xyz/graphql"
-      : "http://localhost:3000/graphql",
+      : "http://localhost:4000/graphql",
 });
 
 const wsLink = new WebSocketLink({
   uri:
     process.env.NODE_ENV === "production"
       ? "wss://dy-api.xyz/graphql"
-      : "ws://localhost:3000/graphql",
+      : "ws://localhost:4000/graphql",
   options: {
     reconnect: true,
     connectionParams: {

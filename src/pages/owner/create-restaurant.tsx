@@ -54,7 +54,7 @@ export const CreateRestaurant = () => {
   const onCompleted = (data: CreateRestaurantMutation) => {
     const { name, address, categoryName } = getValues();
     const {
-      createRestaurant: { ok, error, restaurantId },
+      createRestaurant: { ok },
     } = data;
     if (ok) {
       setUploading(false);
@@ -99,7 +99,7 @@ export const CreateRestaurant = () => {
     }
   };
 
-  const [createRestaurantMutation, { loading, data }] = useMutation<
+  const [createRestaurantMutation] = useMutation<
     CreateRestaurantMutation,
     CreateAccountMutationVariables
   >(CREATE_RESTAURANT_MUTATION, {
@@ -110,7 +110,7 @@ export const CreateRestaurant = () => {
     register,
     handleSubmit,
     getValues,
-    formState: { errors, isValid },
+    formState: { isValid },
   } = useForm<FormProps>({
     defaultValues: {
       categoryName: "분식",
@@ -130,7 +130,9 @@ export const CreateRestaurant = () => {
           body: formBody,
         })
       ).json();
+
       setImgUrl(coverImg);
+
       createRestaurantMutation({
         variables: {
           //@ts-ignore
